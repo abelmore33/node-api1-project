@@ -14,8 +14,8 @@ server.use(express.json());
 
 server.get(`/api/users`, async (req, res) => {
   try {
-    const user = User.find();
-    console.log(user);
+    const user = await User.find();
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: `Bad Request ${err.message}` });
   }
