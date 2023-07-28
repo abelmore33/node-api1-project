@@ -16,9 +16,26 @@ server.get(`/api/users`, async (req, res) => {
   try {
     const user = await User.find();
     res.status(200).json(user);
+    console.log(user);
   } catch (err) {
-    res.status(500).json({ message: `Bad Request ${err.message}` });
+    res.status(500).json({ message: `Error Finding Users` });
   }
+});
+
+server.get(`/api/users/:id`, async (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (!user) {
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist" });
+      } else {
+        res.json(user);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "User not found" });
+    });
 });
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
